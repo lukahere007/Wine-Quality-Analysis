@@ -1,130 +1,142 @@
-Wine Quality Analysis
+# 🍷 Wine Quality Factor Analysis
 
-This project explores the Wine Quality datasets (red & white) using factor analysis, regression, and clustering. The goal is to uncover latent dimensions of wine chemistry, assess their relationship with quality, and segment wines into distinct style clusters.
+![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg) ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.2%2B-green.svg)
 
-1. Data
+Interactive factor analysis & clustering of Portuguese Vinho Verde wine physicochemical data.
 
-Sources: winequality-red.csv, winequality-white.csv
+---
 
-Features: 11 physicochemical measurements (e.g. fixed acidity, pH, alcohol) + quality score (3–9) + binary is_white indicator.
+## 📁 Repository Structure
 
-2. Factor Analysis
+```
+wine-quality-analysis/
+├─ data/                  # Original CSVs (red & white)
+├─ figures/               # Generated plots (.png)
+├─ notebooks/             # Jupyter notebooks of the analysis
+├─ README.md              # This file
+├─ requirements.txt       # Python dependencies
+└─ LICENSE                
+```
 
-Components: 3 factors extracted with Varimax rotation.
+---
 
-| Factor  | Key Loadings (>|0.4|)                        | Interpretation                                   |
-|---------|------------------------------------------------|--------------------------------------------------|
-| 1   | + density (0.94), + residual sugar (0.73),+ total SO₂ (0.26),- alcohol (–0.75),- is_white (–0.13) | Body / Sweetness vs. DrynessHigh‑density, sugar‑rich (often white) wines score high; dry, high‑alcohol (often red) wines score low. |
-| 2   | + fixed acidity (–0.95), + pH (0.40),+ free SO₂ (0.18), + total SO₂ (0.18)      | Acid balance & preservationContrasts acidic (low pH) vs. sulfite‑driven preservation. |
-| 3   | + volatile acidity (0.67), + pH (0.46),+ chlorides (0.48),- total SO₂ (–0.75),- is_white (–0.93) | Aromatic / oxidative notesHigh volatile acidity & salty character vs. sulfite levels; strongly separates reds from whites. |
+## 🚀 Quickstart
 
-Correlation with Quality
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/lukahere007/wine-quality-analysis.git
+   cd wine-quality-analysis
+   ```
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Download data**  
+   Place `winequality-red.csv` & `winequality-white.csv` into `data/`.
+4. **Run the analysis**  
+   ```bash
+   jupyter lab
+   ```
+   Open `notebooks/wine_quality_factor_analysis.ipynb`.
 
-Factor 1 vs. Quality: r≈ –0.30 (better wines tend to be drier, higher‐alcohol)
+---
 
-Factor 2 vs. Quality: r≈ –0.08 (weak)
+## 🔍 Analysis Overview
 
-Factor 3 vs. Quality: r≈ –0.06 (weak)
+<details>
+<summary>1. Data Loading & Cleaning</summary>
 
-3. Regression
+- Handled quoting issues in `winequality-red.csv`.
+- Standardized column names & combined red + white datasets.
+- Added `is_white` dummy for wine color.
+</details>
 
-Predicting quality from factor scores (5‑fold CV)
+<details>
+<summary>2. Factor Analysis</summary>
 
-Linear Regression: R² ≈ 0.014
+- Reduced 12 features (+ color) to **3 latent factors**.
+- Applied Varimax rotation for interpretability.
+</details>
 
-Decision Tree (tuned): R² ≈ 0.060
+<details>
+<summary>3. Factor Interpretation</summary>
 
-Best params: max_depth=5, min_samples_leaf=5
+| Factor    | Key Loadings                       | Interpretation                                       |
+|-----------|------------------------------------|------------------------------------------------------|
+| **1**     | density (+), residual sugar (+), alcohol (–) | “Body/Sweetness vs. Alcohol”                        |
+| **2**     | total SO₂ (+), free SO₂ (+), pH (+) | Sulfur & acidity balance                              |
+| **3**     | volatile acidity (+), chlorides (+), is_white (–) | Acidity/oxidation & color (red vs. white separation) |
+</details>
 
-Feature importances: Factor 1 (0.73), Factor 2 (0.16), Factor 3 (0.11)
+<details>
+<summary>4. Quality Link</summary>
 
-Even with latent factors, only ~6% of quality variance is explainable.
+- **Factor 1** correlates modestly with quality (r ≈ –0.30): drier, higher-alcohol wines score higher.
+- Factors 2 & 3 show negligible correlation.
+</details>
 
-4. Clustering
+<details>
+<summary>5. Predictive Modeling</summary>
 
-Segment wines in factor space via K‑means (silhouette‑tuned):
+- **Linear Regression** on factors: R² ≈ 0.01  
+- **Decision Tree Regressor** (tuned): R² ≈ 0.06  
+  - Factor 1 was most important (≈ 73%), then Factor 2 (16%), Factor 3 (11%).
+</details>
 
-Optimal clusters: k=4, n_init=5 (silhouette ≈ 0.45)
+<details>
+<summary>6. Clustering (K-Means)</summary>
 
-Cluster
+- Optimal **k=4** clusters (silhouette ≈ 0.45) in factor space.
+- Reveals four wine “styles” differing in sweetness, alcohol, SO₂, acidity profiles.
+</details>
 
-Count
+---
 
-Mean Quality
+## 📊 Key Findings
 
-Mean Factor_1
+- **Factor 1** is the primary quality driver:  
+  - High density & sugar vs. high alcohol trade‐off.
+- Raw chemical factors explain only a small fraction of sensory scores.
+- **Cluster segmentation** groups wines into intuitive styles (sweet, dry, high‐SO₂, high‐acid).
 
-Mean Factor_2
+---
 
-Mean Factor_3
+## 🔮 Next Steps
 
-Style Profile
+- Integrate grape variety, vintage, or price data.
+- Try ensemble/tree‐based models (Random Forest, XGBoost).
+- Deploy an interactive dashboard for exploration.
 
-0
+---
 
-2768
+## 📦 Requirements
 
-6.09
+```text
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+jupyterlab
+```
 
-–0.06
+Install with:
 
-–0.14
+```bash
+pip install -r requirements.txt
+```
 
-–0.25
+---
 
-Balanced, moderate body
+## 📄 License
 
-1
+This project is licensed under the MIT License.
 
-1161
+---
 
-5.55
+## 👤 Author
 
-+0.04
-
-+0.01
-
-+1.76
-
-Aromatic / oxidative
-
-2
-
-2066
-
-5.62
-
-+0.73
-
-+0.73
-
-–0.70
-
-Sweet/full‑bodied whites
-
-3
-
-502
-
-5.75
-
-–1.19
-
-–2.25
-
-+0.19
-
-High‑acid, low sugar reds
-
-Clusters reveal distinct style groups that partly align with red/white and quality.
-
-Next Steps
-
-Integrate these analyses into an interactive dashboard
-
-Explore supervised models with raw + latent features
-
-Compare to PCA or other dimensionality‑reduction methods
-
-Author: lukew | Date: Apr 23 2025
-
+**Luke Wamalwa**  
+https://github.com/lukahere007  
+https://linkedin.com/in/luke-wamalwa-839624292  
+*Created on Apr 23 2025*
