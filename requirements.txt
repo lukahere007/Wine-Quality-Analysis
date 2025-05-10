@@ -1,0 +1,11 @@
+Python (pandas, numpy, matplotlib, seaborn)
+
+scikit-learn
+
+factor_analyzer
+
+statsmodels
+
+xgboost
+
+jupyterlab
