@@ -1,11 +1,13 @@
-Python (pandas, numpy, matplotlib, seaborn)
-
-scikit-learn
-
-factor_analyzer
-
-statsmodels
-
-xgboost
-
-jupyterlab
+# factor_analyzer 0.5.1 is not compatible with scikit-learn >= 1.8
+scikit-learn==1.7.2
+factor_analyzer==0.5.1
+numpy==2.4.6
+pandas==3.1.0
+scipy==1.17.1
+matplotlib==3.11.2
+seaborn==0.13.2
+statsmodels==0.15.0
+xgboost==3.2.0
+jupyter
+nbconvert
+ipykernel
